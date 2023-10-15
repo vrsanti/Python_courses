@@ -17,23 +17,18 @@
 # • Suma las dos matrices utilizando la función sumar_matrices y muestra el resultado.
 # • [OPCIONAL] Multiplica las dos matrices utilizando la función multiplicar_matrices y muestra el resultado.
 
-# Matrices => Una lista de listas
+from random import randint
 
-import numpy as np
+def crear_matriz(n, m) -> int:
+    matriz = []
+    for i in range(n):
+        fila = []
+        for j in range(m):
+            fila.append(randint(1,100))
+        matriz.append(fila) 
+    return matriz
 
-'''
-    Las filas son interpretadas como las listas interiores
-    Las columnas son interpretadas como los elementos de cada una de las listas
-    Nomenclatura para definir la dimension es: (Filas)x(Columnas)
-'''
-matriz = [[1, 2, 3],
-          [4, 5, 6],
-          [7, 8, 9]]  # => Filas: 3 - Columnas: 3 -> Matriz: 3x3
-
-
-# Proceso de dibujo de una matriz
-
-def dibujar_matriz(matriz):
+def dibujar_matriz(matriz) -> None:
     dibujo = ''
     _fila = 0
 
@@ -42,66 +37,37 @@ def dibujar_matriz(matriz):
         for columna in fila:
             dibujo += f'{str(columna)},'
         dibujo = dibujo[:len(dibujo) - 1]
-        dibujo += f'] => {_fila}\n'
+        dibujo += f']\n'
         _fila += 1
-
     return dibujo
 
+def sumar_matriz(a, b) -> None: 
+    if len(a) == len(b) and len(a[0]) == len(b[0]):
+        c = crear_matriz(len(a), len(a[0])) 
+        for i in range(len(a)):
+            for j in range(len(a[0])): c[i][j] = a[i][j] + b[i][j]
+    return c
 
-# print(dibujar_matriz(matriz))
+def multiplica_matriz(a, b):
+    if len(a[0]) == len(b):
+        c = crear_matriz(len(a), len(b[0])) 
+        for i in range(len(c)):
+            for j in range(len(c[0])):
+                for k in range(len(a[0])):
+                    c[i][j] += a[i][k] * b[k][j]
+        return c
 
+matriz_1 = crear_matriz(4, 4)
+print("Matriz (formato lineal): ", matriz_1)
+matriz_2 = crear_matriz(4, 4)
+print("Matriz (formato lineal): ", matriz_2)
 
-# Acceder a los datos de una matriz
-indice_fila = 2
-indice_columna = 0
-valor_encontrado = matriz[indice_fila][indice_columna]
-# print(valor_encontrado)
+print(" ")
+print("Matriz 1:\n", dibujar_matriz(matriz_1))
+print("Matriz 2:\n", dibujar_matriz(matriz_2))
 
-# Modificar a los datos de una matriz
-indice_fila = 2
-indice_columna = 0
-matriz[indice_fila][indice_columna] = 100
-# print(dibujar_matriz(matriz))
+print(" ")
+print("Suma matriz 1 y matriz 2:\n", dibujar_matriz(sumar_matriz(matriz_1, matriz_2)))
 
-
-# Numpy -> Matrices
-matriz = [[1, 2, 3, 'a'],
-          [4, 5, 6, 'b'],
-          [7, 8, 9, 'c']]  # => Filas: 3 - Columnas: 4 -> Matriz: 3x4
-
-np_matriz = np.array(matriz)
-# print(np_matriz)
-
-np_eye = np.eye(5, 5, dtype=int)
-# print(np_eye)
-
-np_identity = np.identity(10)
-# print(np_identity)
-
-np_ones = np.ones((10, 10))
-# print(np_ones)
-
-np_zeros = np.zeros((10, 10))
-# print(np_zeros)
-
-# Acceder a elementos
-print(np_matriz[1][3])
-
-# Modificar a elementos
-np_matriz[1][3] = 'z'
-# print(np_matriz)
-
-
-# Suma de matrices
-matriz1 = [[1, 2, 3],
-           [4, 5, 6],
-           [7, 8, 9]]  # => Filas: 3 - Columnas: 3 -> Matriz: 3x3
-matriz2 = [[10, 20, 30],
-           [40, 50, 60],
-           [70, 80, 90]]  # => Filas: 3 - Columnas: 3 -> Matriz: 3x32
-
-np_matriz1 = np.array(matriz1)
-np_matriz2 = np.array(matriz2)
-
-np_result = np_matriz1 + np_matriz2
-print(np_result)
+print(" ")
+print("Multiplicación matriz 1 y matriz 2:\n", dibujar_matriz(multiplica_matriz(matriz_1, matriz_2)))
